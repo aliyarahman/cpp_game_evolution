@@ -104,11 +104,11 @@ char opponent(char piece) {
 void displayBoard(const vector<char>& board) {
 	cout << "Welcome to 1-D TicTacToe\n\n";
 
-	cout << "\n " << board[0] << " | " << board[1] << " | " << board[2];
-	cout << "-----------";
-	cout << " " + board[3] << " | " << board[4] << " | " << board[5];
-	cout << "-----------";
-	cout << " " + board[6] << " | " << board[7] << " | " << board[8];
+	cout << "\n " << board[0] << " | " << board[1] << " | " << board[2] << endl;
+	cout << "-----------" << endl;
+	cout << " " << board[3] << " | " << board[4] << " | " << board[5] << endl;
+	cout << "-----------" << endl;
+	cout << " " << board[6] << " | " << board[7] << " | " << board[8] << endl;
 	cout << "\n\n";
 }
 
@@ -143,13 +143,62 @@ int humanMove(const vector<char>& board, char human) {
 	return response;
 }
 
-int computerMove(const vector<char> board, char computer) {
-	//
+int computerMove(vector<char> board, char computer) {
+	unsigned int move = 0;
+	bool found = false;
+
+	while (!found && move < board.size()) {
+		if (isLegal(move, board)) {
+			board[move] = computer;
+			found = winner(board) == computer;
+			board[move] = EMPTY;
+		}
+
+		if (!found) {
+			++move;
+		}
+	}
+
+	if (!found) {
+		move = 0;
+		char human = opponent(computer);
+
+		while (!found && move < board.size()) {
+			if (isLegal(move, board)) {
+				board[move] = human;
+				found = winner(board) == human;
+				board[move] = EMPTY;
+			}
+
+			if (!found) {
+				++move;
+			}
+		}		
+	}
+
+	if (!found) {
+		move = 0;
+		unsigned int i = 0;
+
+		const int BEST_MOVES[] = { 4, 0, 2, 6, 8, 1, 3, 5, 7 };
+		
+		while (!found && i < board.size()) {
+			move = BEST_MOVES[i];
+			if (isLegal(move, board))
+			{
+				found = true;
+			}
+			++i;
+		}
+	}
+	
+	cout << "Computer takes square number " << move << endl;
+	return move;
 }
 
 void announceWinner(char winner, char computer, char human) {
 	if (winner == computer || winner==human) {
-		cout << winner << "wins!\n";
+		cout << winner << " wins!\n";
 	}
 	else {
 		cout << "It's a tie!\n";
