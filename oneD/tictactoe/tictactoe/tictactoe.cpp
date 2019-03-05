@@ -88,16 +88,16 @@ int askNumber(string question, int high, int low) {
 char humanPiece() {
 	char human = askYesNo("Player X goes first. Do you want to be player X?");
 	if (human == 'y') {
-		return 'X';
+		return X;
 	}
 	else {
-		return 'O';
+		return O;
 	}
 }
 
 char opponent(char piece) {
 	char oppo;
-	oppo = (piece == 'X' ? 'O' : 'X');
+	oppo = (piece == O ? X : O);
 	return oppo;
 }
 
@@ -114,11 +114,12 @@ void displayBoard(const vector<char>& board) {
 
 char winner(const vector<char>& board) {
 	const int TOTAL_ROWS = 8;
-	const int WINNING_ROWS[8][3] = { { 0,1,2 }, { 3,4,5 }, { 6,7,8 }, { 0,3,6 }, { 1,4,7 }, { 2,5,8 } };
+	const int WINNING_ROWS[8][3] = { { 0,1,2 }, { 3,4,5 }, { 6,7,8 }, { 0,3,6 }, { 1,4,7 }, { 2,5,8 }, {0,4,9}, {2,4,7} };
 	
+
 	for (int i = 0; i < TOTAL_ROWS; ++i) {
 		if ((board[WINNING_ROWS[i][0]] != EMPTY) && 
-			((board[WINNING_ROWS[i][0]] == board[WINNING_ROWS[i][2]]) 
+			((board[WINNING_ROWS[i][0]] == board[WINNING_ROWS[i][1]]) 
 				&& (board[WINNING_ROWS[i][1]] == board[WINNING_ROWS[i][2]]))) {
 			return board[WINNING_ROWS[i][0]];
 		}
@@ -192,7 +193,7 @@ int computerMove(vector<char> board, char computer) {
 		}
 	}
 	
-	cout << "Computer takes square number " << move << endl;
+	cout << "Computer takes square " << move << endl;
 	return move;
 }
 
