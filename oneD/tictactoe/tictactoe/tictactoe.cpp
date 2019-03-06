@@ -18,7 +18,7 @@ const char NO_ONE = 'N';
 void instructions(); // Displays game instructions
 char askYesNo(string question); // asks a yes/no question and receives a y or n char
 int askNumber(string question, int high, int low = 0); // Asks for a number between low and high
-char humanPiece(); // Determines if it is a human piece, yeterns 'X' or 'O'
+char humanPiece(); // Determines if it is a human piece, returns 'X' or 'O'
 char opponent(char piece); // Calculates opposing piece (X/O), given a piece
 void displayBoard(const vector<char>& board); // Receives a board array and displays it on screen
 char winner(const vector<char>& board); // Determines the game winner (X, O, Tie, None)
@@ -114,12 +114,11 @@ void displayBoard(const vector<char>& board) {
 
 char winner(const vector<char>& board) {
 	const int TOTAL_ROWS = 8;
-	const int WINNING_ROWS[8][3] = { { 0,1,2 }, { 3,4,5 }, { 6,7,8 }, { 0,3,6 }, { 1,4,7 }, { 2,5,8 }, {0,4,9}, {2,4,7} };
+	const int WINNING_ROWS[8][3] = { { 0,1,2 }, { 3,4,5 }, { 6,7,8 }, { 0,3,6 }, { 1,4,7 }, { 2,5,8 }, {0,4,8}, {2,4,6} };
 	
 
 	for (int i = 0; i < TOTAL_ROWS; ++i) {
-		if ((board[WINNING_ROWS[i][0]] != EMPTY) && 
-			((board[WINNING_ROWS[i][0]] == board[WINNING_ROWS[i][1]]) 
+		if ((board[WINNING_ROWS[i][0]] != EMPTY) && ((board[WINNING_ROWS[i][0]] == board[WINNING_ROWS[i][1]]) 
 				&& (board[WINNING_ROWS[i][1]] == board[WINNING_ROWS[i][2]]))) {
 			return board[WINNING_ROWS[i][0]];
 		}
@@ -135,11 +134,11 @@ bool isLegal(int move, const vector<char> board) {
  }
 
 int humanMove(const vector<char>& board, char human) {
-	int response = askNumber("Where will you move?", (board.size() - 1));
+	int response = askNumber("Where will you move? Press ", (board.size() - 1), 0);
 
 	while (!isLegal(response, board)) {
 		cout << "\nThat square is taken - choose again!\n" ;
-		response = askNumber("Where will you move?", (board.size() - 1));
+		response = askNumber("Where will you move? Press ", (board.size() - 1), 0);
 	}
 	return response;
 }
